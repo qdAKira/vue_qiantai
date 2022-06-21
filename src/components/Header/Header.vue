@@ -38,6 +38,7 @@
             type="text"
             id="autocomplete"
             class="input-error input-xxlarge"
+            v-model="keyword"
           />
           <button
             class="sui-btn btn-xlarge btn-danger"
@@ -55,10 +56,26 @@
 <script>
 export default {
   name: "Header",
+  data() {
+    return {
+      keyword:'',
+    }
+  },
   methods: {
     //搜索按钮的回调函数，需要向search路由进行跳转
     goSearch() {
-      this.$router.push("/search");
+      //路由传递参数
+      //1.字符串形式
+      // this.$router.push("/search");
+      // this.$router.push("/search/"+this.keyword+"?k="+this.keyword.toUpperCase());
+      //2.模板字符串
+      // this.$router.push(`/search/${this.keyword}?k=${this.keyword.toUpperCase()}`)
+      //3.对象(常用)
+      this.$router.push({ name:'search',params:{keyword:this.keyword},query:{k:this.keyword.toUpperCase()}})
+      // 
+
+      //后面两项分别代表执行成功和失败的回调函数。这种写法治标不治本，将来在别的组件中push|replace,编程式导航还是会有类似错误
+      // this.$router.push({ name:'search',params:{keyword:this.keyword},query:{k:this.keyword.toUpperCase()}},()=>{},()=>{})
     },
   },
 };

@@ -113,11 +113,48 @@ $router：一般进行编程式导航进行路由跳转【push | replace】
 
 5.3路由的跳转？
 路由的跳转有两种形式：
-声明书导航router-link,可以进行路由的跳转
+声明式导航router-link,可以进行路由的跳转
 编程式导航push|replace,可以进行路由跳转
 
 编程式导航：声明书导航能做的，编程式导航都能在
 但是编程式导航除了可以进行路由跳转，还可以做一些其他的业务逻辑
 
+6)Footer组件显示与隐藏
+显示或者隐藏组件：v-if|v-show
+Footer组件：在Home、Search显示Footer组件
+Footer组件：在登录、注册时隐藏的
+
+6.1我们可以根据组件身上的$route获取当前路由的信息，通过路由路径判断Footer显示与隐藏
+6.2配置路由的时候，可以给路由添加路由元信息【meta】,路由需要配置对象，它的key不能乱写
+
+8)路由传参
+8.1:路由跳转有几种方式？
+比如A->B
+声明式导航:router-link(务必要有to属性),可以实现路由的跳转
+编程式导航：利用的是组件实例的$route.push|replace方法，可以实现路由的跳转（可以书写一些自己的业务）
+
+8.2：路由传参，参数有几种写法？
+params参数：属于路径当中的一部分，需要注意，在配置路由的时候，需要占位
+query参数：不属于路径当中的一部分，类似于ajax中queryString /home?k=v&kv=,不需要占位
 
 
+9)路由传参相关面试题
+1：路由传递参数（对象写法）path是否可以结合params参数一起使用？（不能）
+答：路由跳转传参的时候，对象的写法可以是name、path形式，但是path写法，不能传递params参数
+
+2：如何指定params参数可传可不传？
+比如：配置路由的时候，站为了（params参数），但是路由跳转的时候就不传递
+路径会出现问题
+http://localhost:8080/#/?k=QWE
+
+http://localhost:8080/#/search
+答：如何指定params参数可传可不传，在配置路由的时候，在占位的后面加一个问号（？），例如(path:'/search/:keyword?',)
+
+3：params参数可以传递也可以不传递，但是如果传递是空串，如何解决？
+使用undefined解决：params参数传递、不传递（空的字符串）
+ this.$router.push({name:'search', params:{keyword:''||undefined}, query:{k:this.keyword.toUpperCase()}})
+4：路由组件能不能传递props数据
+可以的，3中写法
+  1.对象写法 props:{a:1,b:2}
+  2.布尔值 只能传params  props:true
+  3.函数写法:可以params参数，query参数，通过props传递给路由组件（常用）props($route){return{id:$route.params.id,title:$route.params.title}}
