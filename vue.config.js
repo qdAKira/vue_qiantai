@@ -6,7 +6,15 @@ module.exports = defineConfig({
   devServer:{
     open:true,
     host:'localhost',
-    port:8080
+    port:8080,
+    
+    //代理跨域
+    proxy:{
+      '/api':{
+        target:'http://gmall-h5-api.atguigu.cn',
+        // pathRewrite:{'^/api':''} 路径重写不需要
+      }
+    }
   },
   //关闭eslint
   lintOnSave: false

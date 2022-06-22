@@ -22,7 +22,7 @@ push：VueRouter类的一个实例
   3.获取服务器的数据进行展示
   4.js动态业务
 
-  3.三级联动组件完成
+3.三级联动组件完成
     由于三级联动，在Home、Search、Detail，把三级联动注册为全局组件
     好处：只需要注册一次，就可以在项目任意地方使用
   3.1全局组件的使用
@@ -33,3 +33,49 @@ push：VueRouter类的一个实例
       Vue.component(TypeNav.name,TypeNav)）
 
      3.使用，（不需要引入，直接使用） 
+
+4：完成其余静态组件
+  HTML + css + 图片资源 ---【结构、样式、图片资源】
+
+5.postman接口测试
+
+6:axios二次封装
+  XMLHttpRequest ,fetch,JQ,axios
+  6.1 为什么需要进行二次封装axios？
+  请求拦截器、响应拦截器
+  请求拦截器：可以在发请求之前处理一些业务
+  响应拦截器：当服务器数据返回以后，可以处理一些事情
+
+  使用前安装axios (npm i --save axios)
+
+  6.2在项目中经常API【axios】
+  接口中：路径都带有/api
+  baseURL:'/api'
+
+  6.3可去git|npm查看关于axios文档
+
+
+7.接口统一管理
+
+  项目很小：完全可以在组件的生命周期函数中发请求
+
+  项目大：axios.get('xxxx')
+
+  7.1跨域问题
+  什么是跨域：协议，域名，端口号不同请求，称为跨域
+  http://locationhost:8080/#/home ---前端项目本地服务器
+  http://39.98.123.211  ----后台服务器
+
+  解决跨域
+  JSONP、CROS、代理（配置代理服务器）
+
+8.nprogress 进度条的使用
+  安装npm i --save nprogress
+  使用时要引入nprogress以及它的样式（一般放在拦截器中）
+
+  start:进度条开始(请求)
+  done：进度条结束（响应）
+  进度条颜色可以修改的，需要修改样式
+
+9.vuex状态管理库
+  9.1vuex是什么
