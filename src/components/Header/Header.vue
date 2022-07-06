@@ -71,12 +71,25 @@ export default {
       //2.模板字符串
       // this.$router.push(`/search/${this.keyword}?k=${this.keyword.toUpperCase()}`)
       //3.对象(常用)
-      this.$router.push({ name:'search',params:{keyword:this.keyword},query:{k:this.keyword.toUpperCase()}})
+      // this.$router.push({ name:'search',params:{keyword:this.keyword},query:{k:this.keyword.toUpperCase()}})
       // 
 
       //后面两项分别代表执行成功和失败的回调函数。这种写法治标不治本，将来在别的组件中push|replace,编程式导航还是会有类似错误
       // this.$router.push({ name:'search',params:{keyword:this.keyword},query:{k:this.keyword.toUpperCase()}},()=>{},()=>{})
+      if(this.$route.query){
+        let location = {name:'search',params:{keyword:this.keyword || undefined}}
+        location.query = this.$route.query;
+        this.$router.push(location)
+      }
     },
+
+  },
+  mounted() {
+    //  组件挂载时就监听clear事件，clear事件在search模块中定义
+   //  当删除关键字面包屑时，触发该事件，同时header的输入框绑定的keyword要删除
+    this.$bus.$on('clear',()=>{
+      this.keyword = ''
+    })
   },
 };
 </script>

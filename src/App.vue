@@ -13,7 +13,12 @@ import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 export default {
   name: 'App',
-  components: {Header,Footer}
+  components: {Header,Footer},
+  mounted() {
+    //通知vuex发送请求，获取数据，存储到仓库
+    //派发一个action||获取商品分类的三级列表的数据
+    this.$store.dispatch("categoryList");
+  },
 }
 </script>
 

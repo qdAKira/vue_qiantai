@@ -6,14 +6,14 @@
     <TodayRecommend/>
     <Rank/>
     <Like/>
-    <Floor/>
-    <Floor/>
+    <Floor v-for="(floor,index) in floorList":key="floor.id":list="floor"/>
     <Brand/>
   </div>
 </template>
 
 <script>
 //引入其他组件
+import {mapState} from 'vuex'
 import ListContainer from '@/pages/Home/ListContainer'
 import TodayRecommend from '@/pages/Home/TodayRecommend'
 import Rank from '@/pages/Home/Rank'
@@ -29,6 +29,16 @@ import Brand from '@/pages/Home/Brand'
       Like,
       Floor,
       Brand
+    },
+    mounted() {
+      //派发action,获取floor数据
+      this.$store.dispatch("getFloorList")
+    },
+    computed:{
+      ...mapState({
+        //floorList为自己定义的名字，右侧为一个函数，返回的是操作state的值
+        floorList:state=>state.home.floorList
+      })
     }
   }
 </script>

@@ -78,4 +78,57 @@ push：VueRouter类的一个实例
   进度条颜色可以修改的，需要修改样式
 
 9.vuex状态管理库
-  9.1vuex是什么
+  9.1vuex是什么？
+  vuex是官方提供一个插件，状态管理库，集中式管理项目中组件共用的数据
+  注意：不是所有的项目都需要vuex，如果项目很小，完全不需要vuex，项目较大，组件很多，数据很多，数据维护费劲，vuex
+
+  state
+  actions
+  mutations
+  getters
+
+ 9.2 使用
+  引入时vue2中只能使用vuex3(npm i vuex@3)
+  vue3中使用vuex4
+  ### 3.搭建vuex环境
+
+  1. 创建文件：```src/store/index.js```
+
+    ```js
+    //引入Vue核心库
+    import Vue from 'vue'
+    //引入Vuex
+    import Vuex from 'vuex'
+    //应用Vuex插件
+    Vue.use(Vuex)
+    
+    //准备actions对象——响应组件中用户的动作
+    const actions = {}
+    //准备mutations对象——修改state中的数据
+    const mutations = {}
+    //准备state对象——保存具体的数据
+    const state = {}
+    
+    //创建并暴露store
+    export default new Vuex.Store({
+      actions,
+      mutations,
+      state
+    })
+    ```
+
+  2. 在```main.js```中创建vm时传入```store```配置项
+
+    ```js
+    ......
+    //引入store
+    import store from './store'
+    ......
+    
+    //创建vm
+    new Vue({
+      el:'#app',
+      render: h => h(App),
+      store
+    })
+    ```
