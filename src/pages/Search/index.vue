@@ -39,26 +39,17 @@
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
-              <!-- 价格结构 -->
+              <!-- 价格排序结构 -->
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <!-- 这里isOne、isTwo、isAsc、isDesc是计算属性，如果不使用计算属性要在页面中写很长的代码 -->
+                <li :class="{active:isOne}"@click="changeOrder('1')">
+                   <!-- 阿里图标前置类iconfont -->
+                  <a >综合<span v-show="isOne" class="iconfont" :class="{'icon-caret-up':isAsc,'icon-caret-down':isDesc}"></span></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
+                <li :class="{active:isTwo}"@click="changeOrder('2')">
+                  <a >价格<span v-show="isTwo" class="iconfont" :class="{'icon-caret-up':isAsc,'icon-caret-down':isDesc}"></span></a>
                 </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
-                </li>
+                
               </ul>
             </div>
           </div>
@@ -109,35 +100,7 @@
             </ul>
           </div>
           <!-- 分页器 -->
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <Pagination/>
         </div>
       </div>
     </div>
@@ -164,7 +127,7 @@ export default {
         //搜索的关键字
         keyword: "",
         //排序
-        order: "",
+        order: "1:desc",
         //分页器用的：代表的是当前是第几页
         pageNo: 1,
         //代表的是每一个展示数据的个数
@@ -177,7 +140,7 @@ export default {
     };
   },
   components: {
-    SearchSelector,
+    SearchSelector,  
   },
   //在组件挂载完成前，执行一次把参数传过去
   beforeMount() {
@@ -201,6 +164,20 @@ export default {
     ...mapGetters(["goodList"]),
     ...mapGetters({ trademarkList: "trademarkList" }),
     ...mapGetters(["attrsList"]),
+
+    //
+    isOne(){
+      return this.searchParams.order.indexOf('1')!=-1
+    },
+    isTwo(){
+      return this.searchParams.order.indexOf('2')!=-1
+    },
+    isDesc(){
+      return this.searchParams.order.indexOf('desc')!=-1
+    },
+    isAsc(){
+      return this.searchParams.order.indexOf('asc')!=-1
+    },
   },
   methods: {
     //向服务器请求获取Search模块数据（依据参数不同返回数据进行展示）
@@ -266,7 +243,28 @@ export default {
       this.searchParams.props.splice(index,1);
       //再次发请求
       this.getData()
+    },
+    changeOrder(flag){
+      //flag：用户每一次点击li标签的时候，用于区分是综合（1）还是价格（2）
+      //先获取order初始状态【需要通过初始状态去判断接下来做什么】
+      let originOrder = this.searchParams.order;
+      let originsFlag = originOrder.split(':')[0];
+      let originsSort = originOrder.split(':')[1];
+      //新的排序方式
+      let newOrder = '';
+      //判断的是多次点击的是不是同一个按钮
+      if(flag==originsFlag){
+        newOrder = `${originsFlag}:${originsSort=='desc'?'asc':'desc'}`
+      }else{
+        // 点击的不是同一个按钮
+        newOrder = `${flag}:${'desc'}`
+      }
+      // 需要重新给order赋值
+      this.searchParams.order = newOrder
+      // 再次发送请求
+      this.getData()
     }
+    
   },
   //数据监听：监听组件实例身上的属性的属性值变化
   watch: {
