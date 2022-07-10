@@ -100,7 +100,7 @@
             </ul>
           </div>
           <!-- 分页器 -->
-          <Pagination/>
+          <Pagination :pageNo='searchParams.pageNo' :pageSize='searchParams.pageSize' :total='getTotal' :continues='5'@getPageNo="getPageNo"/>
         </div>
       </div>
     </div>
@@ -109,7 +109,7 @@
 
 <script>
 import SearchSelector from "./SearchSelector/SearchSelector";
-import { mapGetters } from "vuex";
+import { mapGetters,mapState } from "vuex";
 export default {
   name: "Search",
   data() {
@@ -129,9 +129,9 @@ export default {
         //排序
         order: "1:desc",
         //分页器用的：代表的是当前是第几页
-        pageNo: 1,
+        pageNo: 18,
         //代表的是每一个展示数据的个数
-        pageSize: 10,
+        pageSize: 3,
         //平台售卖属性的参数
         props: [],
         // 品牌
@@ -178,6 +178,10 @@ export default {
     isAsc(){
       return this.searchParams.order.indexOf('asc')!=-1
     },
+    // 获取search模块展示产品多少数据
+    ...mapState({
+      getTotal:state =>state.search.searchList.total
+    })
   },
   methods: {
     //向服务器请求获取Search模块数据（依据参数不同返回数据进行展示）
@@ -262,6 +266,11 @@ export default {
       // 需要重新给order赋值
       this.searchParams.order = newOrder
       // 再次发送请求
+      this.getData()
+    },
+    // 自定义事件回调函数---获取当前点击的是第几页
+    getPageNo(pageNo){
+      this.searchParams.pageNo = pageNo
       this.getData()
     }
     
