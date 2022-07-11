@@ -11,6 +11,7 @@ import Home from '@/pages/Home'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Search from '@/pages/Search'
+import Detail from '@/pages/Detail'
 
 //先把VueRouter原型对象的push，保存一份
 let originPush = VueRouter.prototype.push;
@@ -48,6 +49,12 @@ export default new VueRouter({
   //配置路由
   routes:[
     {
+      // 点击图片，跳转获取详细信息，需要传递params参数，获取所点击图片的id
+      path:'/detail/:skuid?',
+      component:Detail,
+      meta:{show:true}
+    },
+    {
       path:'/home',
       component:Home,
       meta:{show:true}
@@ -73,5 +80,10 @@ export default new VueRouter({
       path:'*',
       redirect:'/home'
     }
-  ]
+  ],
+  // 设置路由跳转，滚轮位置
+  scrollBehavior (to, from, savedPosition) {
+    // return 期望滚动到哪个的位置,返回的y=0，代表这个滚动条在最上方
+    return {y:0}
+  }
 })
