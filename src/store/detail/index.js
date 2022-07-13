@@ -1,14 +1,27 @@
-import {reqGoodsInfo} from '@/api'
+import {reqGoodsInfo,reqAddShopping} from '@/api'
 const state = {
   goodInfo:{}
 };
 const actions = {
+  // 获取商品详情的action
   async getGoodInfo({commit},skuId){
     let result = await reqGoodsInfo(skuId);
     if(result.code == 200){
       commit('GETGOODSINFO',result.data)
     }
+  },
+  // 获取添加到购物车的action
+  async getAddShopping({commit},{skuId,skuNum}){
+    let result   =  await reqAddShopping(skuId,skuNum);
+    if(result.code == 200){
+      // 返回成功
+      return 'ok'
+    }else{
+      // 返回失败
+      return Promise.reject(new Error('faile'))
+    }
   }
+    
 };
 const mutations = {
   GETGOODSINFO(state,goodInfo){

@@ -40,3 +40,7 @@ export const reqGoodsInfo = (skuId)=>{
   return requests({url:`/item/${skuId}`,method:'get'})
 }
 
+//添加到购物车(对已有物品进行数量改动)/api/cart/addToCart/{ skuId }/{ skuNum },请求方式：post,增删改查一般都需要调用接口
+export const reqAddShopping = (skuId,skuNum)=>{
+  return requests({url:`/cart/addToCart/${skuId}/${skuNum}`,method:'post'})
+} 

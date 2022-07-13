@@ -12,6 +12,7 @@ import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Search from '@/pages/Search'
 import Detail from '@/pages/Detail'
+import AddCartSuccess from '@/pages/AddCartSuccess'
 
 //先把VueRouter原型对象的push，保存一份
 let originPush = VueRouter.prototype.push;
@@ -48,6 +49,12 @@ VueRouter.prototype.replace = function (location,resolve,reject) {
 export default new VueRouter({
   //配置路由
   routes:[
+    {
+      path:'/addCartSuccess',
+      name:'AddCartSuccess',
+      component:AddCartSuccess,
+      meta:{show:true}
+    },
     {
       // 点击图片，跳转获取详细信息，需要传递params参数，获取所点击图片的id
       path:'/detail/:skuid?',

@@ -88,7 +88,13 @@
                   v-for="(
                     spuSaleAttrValue, index
                   ) in spuSaleAttr.spuSaleAttrValueList"
-                  :key="spuSaleAttrValue.id"@click="changeActive(spuSaleAttrValue,spuSaleAttr.spuSaleAttrValueList)"
+                  :key="spuSaleAttrValue.id"
+                  @click="
+                    changeActive(
+                      spuSaleAttrValue,
+                      spuSaleAttr.spuSaleAttrValueList
+                    )
+                  "
                 >
                   {{ spuSaleAttrValue.saleAttrValueName }}
                 </dd>
@@ -96,12 +102,22 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input
+                  autocomplete="off"
+                  class="itxt"
+                  v-model="skuNum"
+                  @change="changeSkuNum"
+                />
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a
+                  href="javascript:"
+                  class="mins"
+                  @click="skuNum > 1 ? skuNum-- : (skuNum = 1)"
+                  >-</a
+                >
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="addShopCar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -346,7 +362,11 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "Detail",
-
+  data() {
+    return {
+      skuNum: 1,
+    };
+  },
   components: {
     ImageList,
     Zoom,
@@ -366,14 +386,49 @@ export default {
   },
   methods: {
     // 产品的售卖属性值切换高亮----传2个参数，第一个为点击的，第二个为所在的数组
-    changeActive(spuSaleAttrValue,arr){
+    changeActive(spuSaleAttrValue, arr) {
       // 遍历全部售卖属性值，ischecked为0没有高亮
-      arr.forEach(item => {
-        item.isChecked = '0'
+      arr.forEach((item) => {
+        item.isChecked = "0";
       });
       // 点击的那个售卖属性值1
-      spuSaleAttrValue.isChecked = '1'
-    }
+      spuSaleAttrValue.isChecked = "1";
+    },
+    // 修改加入购物车的数量,//表单元素修改产品个数
+    changeSkuNum(event) {
+      let num = event.target.value * 1;
+      //如果用户输入进来的非法,出现NaN或者小于1
+      if (isNaN(num) || num < 1) {
+        this.skuNum = 1;
+      } else {
+        //正常大于1【大于1整数不能出现小数】
+        this.skuNum = parseInt(num);
+      }
+    },
+    // 加入购物车的回调函数
+    async addShopCar() {
+      //1:在点击加入购物车这个按钮的时候，做的第一件事情，将参数带给服务器（发请求），通知服务器加入购车的产品是谁
+      //this.$store.dispatch('getAddShopping'),说白了，它是在调用vuex仓库中的这个getAddShopping函数。
+      //2:你需要知道这次请求成功还是失败，如果成功进行路由跳转，如果失败，需要给用户提示
+      //3:进行路由跳转
+      //4:在路由跳转的时候还需要将产品的信息带给下一级的路由组件
+      //一些简单的数据skuNum，通过query形式给路由组件传递过去
+      //产品信息的数据【比较复杂:skuInfo】,通过会话存储（不持久化,会话结束数据在消失）
+      //本地存储|会话存储，一般存储的是字符串
+      // this.$store.dispatch('getAddShopping',{skuId:this.$route.params.skuid,skuNum:this.skuNum})
+      try {
+        await this.$store.dispatch("getAddShopping", {
+          skuId: this.$route.params.skuid,
+          skuNum: this.skuNum,
+        });
+        // 进行路由跳转,query参数，依照k-v形式传递
+        // 产品信息的数据【比较复杂:skuInfo】,通过会话存储（不持久化,会话结束数据在消失）
+        sessionStorage.setItem('SKUINFO',JSON.stringify(this.skuInfo))
+        this.$router.push({name:'AddCartSuccess',query:{skuNum:this.skuNum}})
+      } catch (error) {
+        alert(error.message);
+      }
+    },
   },
 };
 </script>

@@ -24,3 +24,10 @@
 
     offsetX：鼠标点击位置相对于触发事件对象的水平距离
     offsetY：鼠标点击位置相对于触发事件对象的垂直距离
+
+6.isNaN 方法
+    返回一个 Boolean 值，指明提供的值是否是保留值 NaN （不是数字）。
+
+    isNaN(numValue)
+
+    必选项 numvalue 参数为要检查是否为 NAN 的值。
