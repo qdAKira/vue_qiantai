@@ -44,3 +44,8 @@ export const reqGoodsInfo = (skuId)=>{
 export const reqAddShopping = (skuId,skuNum)=>{
   return requests({url:`/cart/addToCart/${skuId}/${skuNum}`,method:'post'})
 } 
+
+//获取购物车列表数据接口，/api/cart/cartList，请求方式GET
+export const reqShoppingCart = ()=>{
+  return requests({url:'/cart/cartList',method:'get'})
+}

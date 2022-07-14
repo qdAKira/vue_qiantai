@@ -1,6 +1,10 @@
 import {reqGoodsInfo,reqAddShopping} from '@/api'
+// 封装游客身份模块uuid---生成一个随机字符串（不能再变）
+import { getUUID } from "@/utils/uuid_token";
 const state = {
-  goodInfo:{}
+  goodInfo:{},
+  //游客的临时身份
+  uuid_token:getUUID()
 };
 const actions = {
   // 获取商品详情的action
