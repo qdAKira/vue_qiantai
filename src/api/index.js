@@ -49,3 +49,14 @@ export const reqAddShopping = (skuId,skuNum)=>{
 export const reqShoppingCart = ()=>{
   return requests({url:'/cart/cartList',method:'get'})
 }
+
+//获取删除购物车商品接口，/api/cart/deleteCart/{skuId}，请求方式，delete
+export const reqDeleteCartById = (skuId)=>{
+  return requests({url:`/cart/deleteCart/${skuId}`,method:'delete'})
+}
+
+//获取切换商品选中状态接口，/api/cart/checkCart/{skuId}/{isChecked}，请求方式get
+
+export const reqUpdateCheckedById = (skuId,isChecked)=>{
+ return requests({url:`/cart/checkCart/${skuId}/${isChecked}`,method:'get'})
+}

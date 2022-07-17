@@ -21,6 +21,7 @@
               type="checkbox"
               name="chk_list"
               :checked="cart.isChecked == 1"
+              @change="updateChecked(cart,$event)"
             />
           </li>
           <li class="cart-list-con2">
@@ -57,7 +58,7 @@
             <span class="sum">{{ cart.skuNum * cart.skuPrice }}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a class="sindelet" @click="deleteCartById(cart)">删除</a>
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -137,6 +138,30 @@ export default {
         alert(error.message);
       }
     }, 1000),
+
+    //删除某一个商品操作
+    async deleteCartById(cart){
+     try {
+      //  删除成功再次发送请求，更新数据
+        await this.$store.dispatch('deleteShoppingCart',cart.skuId);
+        this.getData()
+     } catch (error) {
+      //  失败了，提示失败原因
+      alert(error.message)
+     }
+    },
+    //修改某一个产品的勾选状态
+    async updateChecked(cart,event){
+      //带给服务器的参数isChecked，不是布尔值，应该是0|1
+      try {
+        let isChecked = event.target.checked?'1':'0';
+        await this.$store.dispatch('updateCheckedById',{skuId:cart.skuId,isChecked})
+        this.getData()
+      } catch (error) {
+        alert(error.message)
+      }
+    }
+
   },
   computed: {
     ...mapGetters(["cartList"]),
