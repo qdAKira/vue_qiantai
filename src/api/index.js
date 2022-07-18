@@ -60,3 +60,13 @@ export const reqDeleteCartById = (skuId)=>{
 export const reqUpdateCheckedById = (skuId,isChecked)=>{
  return requests({url:`/cart/checkCart/${skuId}/${isChecked}`,method:'get'})
 }
+
+//获取验证码接口，/api/user/passport/sendCode/{phone} get
+export const reqGetCode = (phone)=>{
+  return requests({url:`/user/passport/sendCode/${phone}`,method:'get'})
+}
+
+// 获取用户注册的接口，/api/user/passport/register，post
+export const reqUserRegister = (data)=>{
+  return requests({url:'/user/passport/register',data,method:'post'})
+}
