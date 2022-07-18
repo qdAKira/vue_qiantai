@@ -70,3 +70,8 @@ export const reqGetCode = (phone)=>{
 export const reqUserRegister = (data)=>{
   return requests({url:'/user/passport/register',data,method:'post'})
 }
+
+//登录接口，/api/user/passport/login，请求方式POST，携带参数phone,password
+export const reqUserLogin = (data)=>{
+ return requests({url:'/user/passport/login',data,method:'post'})
+}
