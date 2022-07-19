@@ -105,13 +105,45 @@ let router =  new VueRouter({
 })
 
 //全局守卫：前置守卫（在路由跳转之前进行判断）
-router.beforeEach((to,from,next)=>{
+router.beforeEach(async (to,from,next)=>{
   //to:可以获取到你要跳转到那个路由信息
   // from:可以获取到你从哪个路由而来的信息
   // next:放行函数  next()放行
   // next('/login') 放行到指定
-  next();
-  console.log(store);
+  // 方便测试，统一放行
+  // next();
+  // 获取仓库中token
+  let token = store.state.user.token
+  // 携带token问服务器要到用户信息，存储其中的name
+  let name = store.state.user.userInfo.name;
+  // 用户登录了
+  if(token){
+    // 已经登录了，不能在进入登录和注册页面
+    if(to.path=="/login"||to.path=="/register"){
+      next('/home')
+    }else{
+      // 已经登录了，访问非登录与注册，前提需要token信息
+      // 登录了且有用户信息
+      if(name){
+        next()
+      }else{
+        // 登录了，没有用户信息
+        // 在路由跳转之前获取信息
+        try {
+          await store.dispatch('getUserInfo')
+          next();
+        } catch (error) {
+          // token失效，重新登录
+          store.dispatch('userLogout')
+          next('/login')
+        }
+      }
+      
+    }
+  }else{
+    // 用户未登录
+    next();
+  }
 })
 
 export default router
