@@ -6,11 +6,16 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="!userName">
             <span>请</span>
             <!-- 声明式导航，需要to -->
             <router-link to="/login">登录</router-link>
             <router-link class="register" to="/register">免费注册</router-link>
+          </p>
+          <!-- 登陆了 -->
+          <p v-else>
+              <a>{{userName}}</a>
+              <a class="register"@click="logout">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -61,6 +66,11 @@ export default {
       keyword:'',
     }
   },
+  computed:{
+    userName(){
+      return this.$store.state.user.userInfo.name
+    }
+  },
   methods: {
     //搜索按钮的回调函数，需要向search路由进行跳转
     goSearch() {
@@ -82,7 +92,20 @@ export default {
         this.$router.push(location)
       }
     },
-
+    // 退出登录的回调函数
+    logout(){
+      // 退出登录需要做的事情
+      // 1.需要发请求，通知服务器退出登录【清除一些数据：token】
+      // 2.清除项目中的数据【userInfo,token】
+      try {
+        // 退出登录成功
+        this.$store.dispatch('userLogout')
+        // 退出后，跳转到home
+        this.$router.push('/home')
+      } catch (error) {
+        alert(error.message)
+      }
+    }
   },
   mounted() {
     //  组件挂载时就监听clear事件，clear事件在search模块中定义

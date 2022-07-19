@@ -76,11 +76,11 @@
     },
     methods: {
       //登录的回调函数
-      userLogin(){
+      async userLogin(){
         try {
           // 登录成功
           let {phone,password} = this;
-          (phone&&password)&&this.$store.dispatch('userLogin',{phone,password})
+          (phone&&password)&& await this.$store.dispatch('userLogin',{phone,password})
           // 跳转到home首页
           this.$router.push('/home')
 

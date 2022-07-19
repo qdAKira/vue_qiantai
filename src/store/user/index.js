@@ -1,8 +1,10 @@
 //登录与注册的模块
-import { reqGetCode, reqUserLogin, reqUserRegister } from "@/api";
+import { reqGetCode, reqLogout, reqUserInfo, reqUserLogin, reqUserRegister } from "@/api";
+import { setToken,getToken,removeToken } from "@/utils/token";
 const state = {
   code:'',
-  token:''
+  token:getToken(),
+  userInfo:{}
 };
 const actions = {
   // 获取验证码
@@ -34,6 +36,29 @@ const actions = {
     //将来经常通过带token找服务器要用户信息进行展示
     if(reslut.code == 200){
       commit('USERLOGIN',reslut.data.token);
+      // 持久化存储token
+      setToken(reslut.data.token)
+      return 'ok'
+    }else{
+      return Promise.reject(new Error('faile'))
+    }
+  },
+
+  // 获取用户信息,在home页面中派发action
+  async getUserInfo({commit}){
+    let reslut =  await reqUserInfo();
+    console.log(reslut);
+    if(reslut.code ==200){
+      // 提交用户信息
+      commit('GETUSERINFO',reslut.data)
+      
+    }
+  },
+  // 退出登录
+  async userLogout({commit}){
+    let reslut =   await reqLogout();
+    if(reslut.code ==200){
+      commit('CLEAR');
       return 'ok'
     }else{
       return Promise.reject(new Error('faile'))
@@ -46,6 +71,16 @@ const mutations = {
   },
   USERLOGIN(state,token){
     state.token = token
+  },
+  GETUSERINFO(state,userInfo){
+    state.userInfo = userInfo
+  },
+  // 清除本地数据
+  CLEAR(state){
+    // 把仓库以及本地存储数据清空
+    state.token = '';
+    state.userInfo = {};
+    removeToken()
   }
 };
 const getters = {};

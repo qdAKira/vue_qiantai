@@ -3,6 +3,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router'
 
+// 引入store
+import store from '@/store'
 //使用插件
 Vue.use(VueRouter)
 
@@ -47,7 +49,7 @@ VueRouter.prototype.replace = function (location,resolve,reject) {
 }
 
 //配置路由
-export default new VueRouter({
+let router =  new VueRouter({
   //配置路由
   routes:[
     {
@@ -101,3 +103,15 @@ export default new VueRouter({
     return {y:0}
   }
 })
+
+//全局守卫：前置守卫（在路由跳转之前进行判断）
+router.beforeEach((to,from,next)=>{
+  //to:可以获取到你要跳转到那个路由信息
+  // from:可以获取到你从哪个路由而来的信息
+  // next:放行函数  next()放行
+  // next('/login') 放行到指定
+  next();
+  console.log(store);
+})
+
+export default router

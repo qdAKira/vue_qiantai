@@ -75,3 +75,13 @@ export const reqUserRegister = (data)=>{
 export const reqUserLogin = (data)=>{
  return requests({url:'/user/passport/login',data,method:'post'})
 }
+
+// 获取用户信息，需要带着token问服务器要用户信息，url:/api/user/passport/auth/getUserInfo method:get
+export const reqUserInfo = ()=>{
+  return requests({url:'/user/passport/auth/getUserInfo',method:'get'})
+}
+
+//退出登录，/api/user/passport/logout，get
+export const reqLogout = ()=>{
+  return requests({url:'/user/passport/logout',method:'get'})
+}
