@@ -85,3 +85,13 @@ export const reqUserInfo = ()=>{
 export const reqLogout = ()=>{
   return requests({url:'/user/passport/logout',method:'get'})
 }
+
+// 获取用户地址信息 /api/user/userAddress/auth/findUserAddressList    ,get
+export const reqAddressInfo = ()=>{
+  return requests({url:'/user/userAddress/auth/findUserAddressList',method:'get'})
+}
+
+// 获取订单交易页信息，/api/order/auth/trade，GET
+export const reqOrder = ()=>{
+  return requests({url:'/order/auth/trade',method:'get'})
+}

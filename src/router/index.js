@@ -16,6 +16,7 @@ import Search from '@/pages/Search'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
+import Trade from '@/pages/Trade'
 
 //先把VueRouter原型对象的push，保存一份
 let originPush = VueRouter.prototype.push;
@@ -52,6 +53,12 @@ VueRouter.prototype.replace = function (location,resolve,reject) {
 let router =  new VueRouter({
   //配置路由
   routes:[
+    {
+      path:'/trade',
+      name:'Trade',
+      component:Trade,
+      meta:{show:true}
+    },
     {
       path:'/shopCart',
       name:'ShopCart',
@@ -127,7 +134,7 @@ router.beforeEach(async (to,from,next)=>{
       if(name){
         next()
       }else{
-        // 登录了，没有用户信息
+        // 登录了，没有用户信息(这种情况是由于之前只在home页面派发getUserInfo，获取用户信息)
         // 在路由跳转之前获取信息
         try {
           await store.dispatch('getUserInfo')

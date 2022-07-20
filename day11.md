@@ -35,4 +35,7 @@
 组件内守卫：
 
 例如：用户已经登录，用户不应该还能到login页面
+
 6）交易页面
+
+  获取用户地址信息 /api/user/userAddress/auth/findUserAddressList    ,get
