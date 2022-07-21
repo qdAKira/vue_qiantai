@@ -39,11 +39,16 @@ reqCategoryList()
 
 Vue.config.productionTip = false
 
+// 统一接口api文件夹里面全部请求函数
+// 统一引入
+import * as API from '@/api'
+
 new Vue({
   render: h => h(App),
    //开启全局事件总线
    beforeCreate() {
-    Vue.prototype.$bus = this
+    Vue.prototype.$bus = this,
+    Vue.prototype.$API = API
   },
   //注册路由，底下写法key-v一致，省略v[router需要小写]
   router,
