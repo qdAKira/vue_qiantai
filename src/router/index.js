@@ -18,6 +18,7 @@ import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
 import Trade from '@/pages/Trade'
 import Pay from '@/pages/Pay'
+import PaySuccess from '@/pages/PaySuccess'
 
 //先把VueRouter原型对象的push，保存一份
 let originPush = VueRouter.prototype.push;
@@ -54,6 +55,12 @@ VueRouter.prototype.replace = function (location, resolve, reject) {
 let router = new VueRouter({
   //配置路由
   routes: [
+    {
+      path: '/paySuccess',
+      name: 'PaySuccess',
+      component: PaySuccess,
+      meta: { show: true }
+    },
     {
       path: '/pay',
       name: 'Pay',

@@ -66,7 +66,7 @@
 
         <div class="submit">
           <!-- <router-link class="btn" to="/paysuccess">立即支付</router-link> -->
-          <a class="btn">立即支付</a>
+          <a class="btn"@click="open">立即支付</a>
         </div>
         <div class="otherpay">
           <div class="step-tit">
@@ -83,11 +83,16 @@
 </template>
 
 <script>
+// import QRCode from 'qrcode'
   export default {
     name: 'Pay',
     data() {
       return {
-        payInfo:{}
+        payInfo:{},
+        timer:null,
+        // 支付状态码
+        code:''
+
       }
     },
     computed:{
@@ -106,6 +111,70 @@
         if(reslut.code == 200){
           this.payInfo = reslut.data
         }
+      },
+      // 支付弹出框
+      async open() {
+        // 生成二维码
+        // let url = await QRCode.toDataURL(this.payInfo.codeUrl);
+     
+        this.$alert(`<img height="200px" width="200px" src=${require('@/assets/images/pay.png')}/>`,"请你支付", {
+          dangerouslyUseHTMLString: true,
+          // 中间布局
+          center:true,
+          // 是否显示取消和确认按钮
+          showCancelButton:true,
+          showConfirmButton:true,
+          // 修改取消和确认按钮的文本
+          cancelButtonText:"支付遇见问题",
+          confirmButtonText:"支付成功",
+          //右上角的叉子没了
+          showClose: false,
+          //关闭弹出框的配置值
+        beforeClose: (type, instance, done) => {
+          //type:区分取消|确定按钮
+          //instance：当前组件实例
+          //done:关闭弹出框的方法
+          if (type == "cancel") {
+            alert("请联系管理员豪哥");
+            //清除定时器
+            clearInterval(this.timer);
+            this.timer = null;
+            //关闭弹出框
+            done();
+          } else {
+            //判断是否真的支付了
+            //开发人员：为了自己方便，这里判断先不要了
+            // if (this.code == 200) {
+              clearInterval(this.timer);
+              this.timer = null;
+              done();
+              this.$router.push("/paysuccess");
+            // }
+          }
+        },
+        });
+
+        //需要知道订单是否支付成功(长轮询)
+        //成功则跳转，失败则提示信息
+        if(!this.timer){
+          this.timer = setInterval(async () => {
+            // 发请求，获取用户支付状态
+            let reslut = await this.$API.reqPayStatus(this.orderId);
+            // //因为每次支付都要花钱，所以直接205（支付中）就跳转了，
+            if(reslut.code == 205){
+              // 1.清除定时器
+              clearInterval(this.timer);
+              this.timer = null;
+              // 支付成功，返回code
+              this.code = reslut.code;
+              // 关闭弹出框
+              this.$msgbox.close();
+              // 跳转到支付成功的页面
+              this.$router.push('/paySuccess')
+            }
+          }, 1000);
+        }
+
       }
     },
   }

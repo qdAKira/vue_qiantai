@@ -105,3 +105,8 @@ export const reqSubmitInfo = (tradeNo,data)=>{
 export const reqPayInfo = (orderId)=>{
   return requests({url:`/payment/weixin/createNative/${orderId}`,method:'get'})
 }
+
+// 查询支付订单状态,/api/payment/weixin/queryPayStatus/{orderId},GET
+export const reqPayStatus = (orderId)=>{
+  return requests({url:`/payment/weixin/queryPayStatus/${orderId}`,method:'get'})
+}
