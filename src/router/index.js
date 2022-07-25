@@ -19,7 +19,9 @@ import ShopCart from '@/pages/ShopCart'
 import Trade from '@/pages/Trade'
 import Pay from '@/pages/Pay'
 import PaySuccess from '@/pages/PaySuccess'
-
+import Center from '@/pages/Center'
+import GroupOrder from '@/pages/Center/GroupOrder'
+import MyOrder from '@/pages/Center/MyOrder'
 //先把VueRouter原型对象的push，保存一份
 let originPush = VueRouter.prototype.push;
 
@@ -55,6 +57,30 @@ VueRouter.prototype.replace = function (location, resolve, reject) {
 let router = new VueRouter({
   //配置路由
   routes: [
+    {
+      path: '/center',
+      component: Center,
+      meta: { show: true },
+      // 二级路由
+      children:[
+        {
+          path:'myOrder',
+          name:'MyOrder',
+          component:MyOrder,
+          
+        },
+        {
+          path:'groupOrder',
+          name:'GroupOrder',
+          component:GroupOrder,
+        },
+        // 重定向，进入页面后默认展示
+        {
+          path:'',
+          redirect:'myOrder'
+        }
+      ]
+    },
     {
       path: '/paySuccess',
       name: 'PaySuccess',
