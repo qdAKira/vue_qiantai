@@ -137,6 +137,11 @@ Footer组件：在登录、注册时隐藏的
 params参数：属于路径当中的一部分，需要注意，在配置路由的时候，需要占位
 query参数：不属于路径当中的一部分，类似于ajax中queryString /home?k=v&kv=,不需要占位
 
+  query和params传参方法:
+  1.字符串形式：this.$router.push('/login?k='+this.query参数+this.params参数)params参数在路由中提前占位
+  2.模板字符串：this.$router.push("`/login?k=${this.query参数}/${this.params参数}`")
+  3.对象形式：this.$router.push({name:“路由名字”,params:{传参},query:{传参}})
+
 
 9)路由传参相关面试题
 1：路由传递参数（对象写法）path是否可以结合params参数一起使用？（不能）

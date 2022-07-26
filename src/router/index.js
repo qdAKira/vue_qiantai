@@ -85,19 +85,39 @@ let router = new VueRouter({
       path: '/paySuccess',
       name: 'PaySuccess',
       component: PaySuccess,
-      meta: { show: true }
+      meta: { show: true },
+     
     },
     {
       path: '/pay',
       name: 'Pay',
       component: Pay,
-      meta: { show: true }
+      meta: { show: true },
+       // 路由独享守卫
+      beforeEnter: (to, from, next) => {
+        if(from.path == '/trade'){
+          next();
+        }else{
+          // 中断当前导航
+          next(false);
+        
+        }
+      }
     },
     {
       path: '/trade',
       name: 'Trade',
       component: Trade,
-      meta: { show: true }
+      meta: { show: true },
+       // 路由独享守卫
+       beforeEnter: (to, from, next) => {
+        if(from.path == '/ShopCart'){
+          next();
+        }else{
+          // 中断当前导航
+          next(false);
+        }
+      }
     },
     {
       path: '/shopCart',
@@ -193,8 +213,15 @@ router.beforeEach(async (to, from, next) => {
     }
   } else {
     // 用户未登录
-    console.log('555');
-    next();
+    // 未登录：不能去交易相关、支付相关，个人中心
+    // 未登录去以上页面----先登录
+    let toPath = to.path
+    if(toPath.indexOf('/trade')!=-1 ||toPath.indexOf('/pay')!=-1||toPath.indexOf('/center')!=-1){
+      // 把未登录的时候想去而没有去成的信息，存储于地址栏中【路由】
+      next('/login?redirect='+toPath);
+    }else{
+      next();
+    }
   }
 })
 

@@ -1,0 +1,29 @@
+1)个人中心完成
+  面试的时候：是否封装过组件？分页器、日历
+  个人中心当中：分页器
+
+2）全局守卫
+未登录访问，交易相关（trade）、支付相关（pay,paySuccess）、用户中心（center）相关跳转到登录页面
+
+
+3）路由独享守卫
+只有从购物车页面才能跳转到交易页面（创建订单）
+只有从交易页面，才能跳转到支付页面
+只有从支付页面才能跳转到支付成功页面
+
+
+4）图片懒加载(插件)
+https://www.npmjs.com/package/vue-lazyload
+注意：安装的版本1.3.3，最新的加载不出
+  1.npm i vue-lazyload -S
+  2.在main文件中引入，使用
+
+        // 图片懒加载引入
+      import VueLazyload from 'vue-lazyload'
+      import pay from '@/assets/images/pay.png'
+
+      Vue.use(VueLazyload,{
+        // 懒加载默认图片
+        loading:pay
+      })
+  3.在需要的地方，使用指令v-lazy
