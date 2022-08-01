@@ -8,20 +8,20 @@ import store from '@/store'
 //使用插件
 Vue.use(VueRouter)
 
-//引入路由组件
-import Home from '@/pages/Home'
-import Login from '@/pages/Login'
-import Register from '@/pages/Register'
-import Search from '@/pages/Search'
-import Detail from '@/pages/Detail'
-import AddCartSuccess from '@/pages/AddCartSuccess'
-import ShopCart from '@/pages/ShopCart'
-import Trade from '@/pages/Trade'
-import Pay from '@/pages/Pay'
-import PaySuccess from '@/pages/PaySuccess'
-import Center from '@/pages/Center'
-import GroupOrder from '@/pages/Center/GroupOrder'
-import MyOrder from '@/pages/Center/MyOrder'
+//引入路由组件(使用路由懒加载，直接在下面引入)
+// import Home from '@/pages/Home'
+// import Login from '@/pages/Login'
+// import Register from '@/pages/Register'
+// import Search from '@/pages/Search'
+// import Detail from '@/pages/Detail'
+// import AddCartSuccess from '@/pages/AddCartSuccess'
+// import ShopCart from '@/pages/ShopCart'
+// import Trade from '@/pages/Trade'
+// import Pay from '@/pages/Pay'
+// import PaySuccess from '@/pages/PaySuccess'
+// import Center from '@/pages/Center'
+// import GroupOrder from '@/pages/Center/GroupOrder'
+// import MyOrder from '@/pages/Center/MyOrder'
 //先把VueRouter原型对象的push，保存一份
 let originPush = VueRouter.prototype.push;
 
@@ -59,20 +59,20 @@ let router = new VueRouter({
   routes: [
     {
       path: '/center',
-      component: Center,
+      component: ()=>import('@/pages/Center'),
       meta: { show: true },
       // 二级路由
       children:[
         {
           path:'myOrder',
           name:'MyOrder',
-          component:MyOrder,
+          component:()=>import('@/pages/Center/MyOrder'),
           
         },
         {
           path:'groupOrder',
           name:'GroupOrder',
-          component:GroupOrder,
+          component:()=>import('@/pages/Center/GroupOrder'),
         },
         // 重定向，进入页面后默认展示
         {
@@ -84,14 +84,14 @@ let router = new VueRouter({
     {
       path: '/paySuccess',
       name: 'PaySuccess',
-      component: PaySuccess,
+      component: ()=>import('@/pages/PaySuccess'),
       meta: { show: true },
      
     },
     {
       path: '/pay',
       name: 'Pay',
-      component: Pay,
+      component: ()=>import('@/pages/Pay'),
       meta: { show: true },
        // 路由独享守卫
       beforeEnter: (to, from, next) => {
@@ -107,7 +107,7 @@ let router = new VueRouter({
     {
       path: '/trade',
       name: 'Trade',
-      component: Trade,
+      component: ()=>import('@/pages/Trade'),
       meta: { show: true },
        // 路由独享守卫
        beforeEnter: (to, from, next) => {
@@ -122,40 +122,40 @@ let router = new VueRouter({
     {
       path: '/shopCart',
       name: 'ShopCart',
-      component: ShopCart,
+      component: ()=>import('@/pages/ShopCart'),
       meta: { show: true }
     },
     {
       path: '/addCartSuccess',
       name: 'AddCartSuccess',
-      component: AddCartSuccess,
+      component: ()=>import('@/pages/AddCartSuccess'),
       meta: { show: true }
     },
     {
       // 点击图片，跳转获取详细信息，需要传递params参数，获取所点击图片的id
       path: '/detail/:skuid?',
-      component: Detail,
+      component: ()=>import('@/pages/Detail'),
       meta: { show: true }
     },
     {
       path: '/home',
-      component: Home,
+      component:()=>import('@/pages/Home'),
       meta: { show: true }
     },
     {
       path: '/login',
-      component: Login,
+      component: ()=>import('@/pages/Login'),
       meta: { show: false }
     },
     {
       path: '/register',
-      component: Register,
+      component: ()=>import('@/pages/Register'),
       meta: { show: false }
     },
     {
       name: 'search',
       path: '/search/:keyword?',
-      component: Search,
+      component: ()=>import('@/pages/Search'),
       meta: { show: true }
     },
     //重定向,在项目跑起来的时候，访问/，立马转到home页面
