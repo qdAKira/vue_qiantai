@@ -79,15 +79,19 @@ export default {
       box-sizing: border-box;
       text-align: center;
       border: 0;
+      // 设置成圆形
+      // border-radius: 50%;
 
       &[disabled] {
-        color: #c0c4cc;
+        // color: #c0c4cc;
+        color: #0d2662;
         cursor: not-allowed;
       }
 
       &.active {
         cursor: not-allowed;
-        background-color: #409eff;
+        // background-color: #409eff;
+        background-color: #13ecce;
         color: #fff;
       }
     }
